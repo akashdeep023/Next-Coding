@@ -109,8 +109,12 @@ app
 `/` `/products` `/products/1` `/products/100`
 
 ```tsx
-export default function Product({ params }: { params: { productId: string } }) {
-    return <>Products {productId}</>;
+export default function ProductDetails({
+    params,
+}: {
+    params: { productId: string };
+}) {
+    return <h1>Products {params.productId} page</h1>;
 }
 ```
 
@@ -142,7 +146,7 @@ export default function Product({
 }) {
     return (
         <>
-            Products {productId} & {reviewId}
+            Reviews {params.reviewId} && Products {params.productId}
         </>
     );
 }
@@ -162,17 +166,17 @@ app
 `/` `/docs` `/docs/routing` `/docs/routing/catch-all-segments`
 
 ```tsx
-export default function Product({ params }: { params: { slug: string[] } }) {
-    if (slug?.length === 2) {
-        return <>Docs {slug[0]} & slug[1] </>;
-    } else {
-        return <>Docs {slug[0]}</>;
+export default function Docs({ params }: { params: { slug: string[] } }) {
+    if (params.slug?.length === 2) {
+        return (
+            <h1>
+                Docs {params.slug[0]} & {params.slug[1]}{" "}
+            </h1>
+        );
+    } else if (params.slug?.length === 1) {
+        return <h1>Docs {params.slug[0]}</h1>;
     }
-    return (
-        <>
-            Products {productId} & {reviewId}
-        </>
-    );
+    return <h1>Docs home page</h1>;
 }
 ```
 
@@ -182,14 +186,109 @@ export default function Product({ params }: { params: { slug: string[] } }) {
 app
 ├── products
 │ ├── [productId]
-│ │ └── page.tsx        (/products/productId -> route)
-│ │ └── not-found.tsx   (/products/(page not found) -> route) (productId < 1000)
-│ └── page.tsx          (/products -> route)
+│ │ ├── reviews
+│ │ │ └── [reviewId]
+│ │ │   └── not-found.tsx   (/products/(page not found) -> route) (productId < 1000)
+│ │ │   └── page.tsx        (/products/productId/reviews/reviewId -> route)
+│ │ └── page.tsx            (/products/productId -> route)
+│ └── page.tsx              (/products -> route)
 ├── layout.tsx
-├── not-found.tsx       (page not found | 404)
+├── not-found.tsx           (page not found | 404)
+└── page.tsx                (/ -> route)
+```
+
+`/` `/jack` `/products/1/reviews/1001`
+
+### File Colocation
+
+-   routes file name must be page.tsx
+-   export default (otherwise elements will not be displayed and a 404 error will occur)
+-   Create React Component at src/component path
+
+### Private Folders
+
+-   A private folder indicates that it is a private implementation detail and should not be considered by the routing system.
+-   The folder and all its subfolders are excluded from routing.
+-   Prefix the folder name with an underscore ( \_ )
+
+### Route Groups
+
+-   Allows us to logically group our routes and project files without affecting the the URL
+
+```
+app
+├── (auth)              (not included in routes)
+│ ├── forgot-password
+│ │ └── page.tsx        (/forgot-password -> route)
+│ ├── login
+│ │ └── page.tsx        (/login -> route)
+│ └── register
+│   └── page.tsx        (/register -> route)
+├── layout.tsx
 └── page.tsx            (/ -> route)
 ```
 
-`/` `/jack` `/products/1001`
+`/` `/login` `/register` `/forgot-password`
 
-### File Colocation
+### Layouts
+
+-   You can define a layout by default exporting a React component from a **layout.js** or **layout.tsx** file.
+-   That component should accept a children prop that will be populated with a child page during rendering.
+
+```tsx
+// RootLayout Function
+export default function RootLayout({
+    children,
+}: {
+    children: React.ReactNode;
+}) {
+    return (
+        <html lang="en">
+            <body>
+                <div>
+                    <p>Header</p>
+                </div>
+                {children}
+                <div>
+                    <p>Footer</p>
+                </div>
+            </body>
+        </html>
+    );
+}
+// Replace children variable from routes page.jsx
+```
+
+**Nested Layout**
+
+```
+app
+├── products
+│ ├── [productId]
+│ │ ├── layout.tsx          (product layout)
+│ │ └── page.tsx            (/products/productId -> route)
+│ └── page.tsx              (/products -> route)
+├── layout.tsx              (root layout)
+├── not-found.tsx           (page not found | 404)
+└── page.tsx                (/ -> route)
+```
+
+### Route Group Layout
+
+-   To organize your project in a manner that doesn't affect the URL.
+-   To selectively apply a layout to certain segments while leaving others untouched.
+
+```
+app
+├── (auth)                  (not included in routes)
+│ ├── forgot-password
+│ │ └── page.tsx            (/forgot-password -> route)
+│ └── (with-auth-layout)    (not included in routes)
+│   ├── layout.tsx          (auth layout)
+│   ├── login
+│   │ └── page.tsx          (/login -> route)
+│   └── register
+│     └── page.tsx          (/register -> route)
+├── layout.tsx              (root layout)
+└── page.tsx                (/ -> route)
+```
