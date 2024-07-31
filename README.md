@@ -326,6 +326,31 @@ export const metadata: Metadata = {
 
 ### Navigation
 
+**Link Tag**
+
 -   `Link` tag used to navigate different pages
 -   Syntax `<Link href="/">Home</Link>`
+
+**replace Attributes**
+
 -   `replace` attribute Replace the current history state instead of adding a new url into the stack.
+
+**usePathname**
+
+-   This function returns the current path.
+-   `usePathname` works on the client side. To use `usePathname` on the server side, write `"use client";` at the top of the file.
+
+**useRouter**
+
+-   `useRouter` works on the client side. To use `useRouter` on the server side, write `"use client";` at the top of the file.
+-   This function is used to navigate to other path.
+
+```tsx
+import { useRouter } from "next/router";
+// use
+const route = useRouter();
+router.push("/"); // navigate to "/"
+router.replace("/"); // Replace "/" with the current path
+router.back(); // navigate back
+router.forward(); // navigate forward
+```
