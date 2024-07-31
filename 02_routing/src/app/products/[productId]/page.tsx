@@ -30,5 +30,5 @@ export const generateMetadata = async ({
 export default function ProductDetails(
     { params }: Props // {params: { productId: string }};
 ) {
-    return <h1>Products {params.productId} page</h1>;
+    return <h1>Product {params.productId} page</h1>;
 }
