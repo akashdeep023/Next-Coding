@@ -362,3 +362,9 @@ router.forward(); // navigate forward
 
 -   A template can be defined by exporting a default React component from a template.js or template.tsx file
 -   Similar to layout, templates also should accept a children prop which will render the nested segments in the route.
+
+### Loading UI
+
+-   This file allows us to create a loading state that are displayed to users while a specific route segment's content is loaded
+
+-   The loading state appears immediately upon navigation, giving users the assurance that the application is responsive and actively loading content.
