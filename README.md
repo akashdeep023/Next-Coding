@@ -377,16 +377,6 @@ router.forward(); // navigate forward
 -   Add functionality to attempt to recover from an error without a full page reload.
 
 ```tsx
-// Special Files
-layout.tsx;
-template.tsx;
-error.tsx;
-loading.tsx;
-not - found.tsx;
-page.tsx;
-```
-
-```tsx
 // Components Hierarchy
 <Layout>
     <Template>
@@ -400,3 +390,12 @@ page.tsx;
     </Template>
 </Layout>
 ```
+
+### Special Files
+
+1. **layout.tsx**: Defines the overall structure and layout of the application.
+2. **template.tsx**: Provides a template for common elements across multiple pages.
+3. **error.tsx**: Handles and displays error messages and pages.
+4. **loading.tsx**: Displays a loading indicator or animation while content is being fetched.
+5. **not-found.tsx**: Renders a 404 page when a route is not found.
+6. **page.tsx**: Represents an individual page within the application.
