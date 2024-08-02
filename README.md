@@ -368,3 +368,35 @@ router.forward(); // navigate forward
 -   This file allows us to create a loading state that are displayed to users while a specific route segment's content is loaded
 
 -   The loading state appears immediately upon navigation, giving users the assurance that the application is responsive and actively loading content.
+
+### Error Handling
+
+-   Automatically wrap a route segment and its nested children in a React Error Boundary
+-   Create error UI tailored to specific segments using the file-system hierarchy to adjust granularity
+-   Isolate errors to affected segments while keeping the rest of the application functional
+-   Add functionality to attempt to recover from an error without a full page reload.
+
+```tsx
+// Special Files
+layout.tsx;
+template.tsx;
+error.tsx;
+loading.tsx;
+not - found.tsx;
+page.tsx;
+```
+
+```tsx
+// Components Hierarchy
+<Layout>
+    <Template>
+        <ErrorBoundary fallback={<Error />}>
+            <Suspense fallback={<Loading />}>
+                <ErrorBoundary fallback={<NotFound />}>
+                    <Page />
+                </ErrorBoundary>
+            </Suspense>
+        </ErrorBoundary>
+    </Template>
+</Layout>
+```
