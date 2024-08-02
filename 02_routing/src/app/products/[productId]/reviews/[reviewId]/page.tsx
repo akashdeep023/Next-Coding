@@ -1,3 +1,4 @@
+"use client";
 // Nested Dynamic Routes ----------------------------------------------------------------
 
 import { notFound } from "next/navigation"; // review page not found

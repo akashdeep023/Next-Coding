@@ -391,6 +391,27 @@ router.forward(); // navigate forward
 </Layout>
 ```
 
+**Recovering From Errors**
+
+```tsx
+"use client";
+export default function ErrorBoundary({
+    error,
+    reset,
+}: {
+    error: Error;
+    reset: () => void; // Recovering Errors function
+}) {
+    return (
+        <div>
+            <h3>Error in Review</h3>
+            <h3>{error.message}</h3>
+            <button onClick={reset}>Try Again</button>
+        </div>
+    );
+}
+```
+
 ### Special Files
 
 1. **layout.tsx**: Defines the overall structure and layout of the application.
