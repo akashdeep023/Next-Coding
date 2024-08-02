@@ -412,6 +412,17 @@ export default function ErrorBoundary({
 }
 ```
 
+**Handling Errors in Nested Routes**
+
+-   Errors bubble up to the closest parent error boundary.
+-   An `error.tsx` file will cater to errors for all its nested child segments
+-   By positioning `error.tsx` files at different levels in the nested folders of a route, you can achieve a more granular level of error handling.
+
+**Handling Error in Layouts**
+
+-   An `error.tsx` file will handle errors for all its nested child sections
+-   The error boundary does not catch errors thrown here because it's nested in the inside the layout component
+
 ### Special Files
 
 1. **layout.tsx**: Defines the overall structure and layout of the application.

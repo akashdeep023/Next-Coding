@@ -1,8 +1,18 @@
+"use client";
+// Create function to generate rendom number
+function generateInt(count: number) {
+    return Math.floor(Math.random() * count);
+}
+
 export default function ProductDetailsLayout({
     children,
 }: {
     children: React.ReactNode;
 }) {
+    const rendom = generateInt(2);
+    if (rendom == 1) {
+        throw new Error("Error: Product not found"); // throw error when review not found
+    }
     return (
         <>
             {children}
