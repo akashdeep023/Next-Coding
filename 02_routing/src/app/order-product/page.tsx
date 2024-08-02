@@ -1,7 +1,7 @@
 "use client";
 import { useRouter } from "next/navigation";
 
-export default function orderProduct() {
+export default function OrderProduct() {
     const router = useRouter();
     const handleOrder = () => {
         // Simulate an order request
