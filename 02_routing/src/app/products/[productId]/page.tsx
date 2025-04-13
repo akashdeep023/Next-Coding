@@ -1,34 +1,33 @@
-import { Metadata } from "next";
 // Metadata Static
 // export const metadata = {
 //     title: "Product Details",
 // };
 
+import { Metadata } from "next";
 type Props = {
-    params: {
-        productId: string;
-    };
+	params: Promise<{ productId: string }>;
 };
 // Metadata Dynamic
 export const generateMetadata = async ({
-    params,
+	params,
 }: Props): Promise<Metadata> => {
-    // find product details
-    const title = await new Promise((resolve) => {
-        setTimeout(() => {
-            resolve(`iPhone ${params.productId}`);
-        }, 100);
-    });
-    // return title
-    return {
-        title: `Product ${title}`,
-    };
+	const { productId } = await params;
+	// find product details
+	const title = await new Promise((resolve) => {
+		setTimeout(() => {
+			resolve(`iPhone ${productId}`);
+		}, 100);
+	});
+	// return title
+	return {
+		title: `Product ${title}`,
+	};
 };
 
 // Dynamic Routes ----------------------------------------------------------------
 // Products details page (route -> '/products/1' ... '/products/100')
-export default function ProductDetails(
-    { params }: Props // {params: { productId: string }};
-) {
-    return <h1>Product {params.productId} page</h1>;
+export default async function ProductDetails({ params }: Props) {
+	// const productId = (await params).productId;
+	const { productId } = await params;
+	return <h1>Product {productId} page</h1>;
 }

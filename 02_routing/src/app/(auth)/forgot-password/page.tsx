@@ -1,3 +1,3 @@
 export default function ForgotPassword() {
-    return <h1>ForgotPassword Page</h1>;
+	return <h1>Forgot Password Page</h1>;
 }

@@ -18,19 +18,19 @@
 
 -   These features include routing, optimized rendering, data fetching, bundling, compiling and more.
 
--   You don;t need to install additional packages as Next.js provides everything you need.
+-   You don't need to install additional packages as Next.js provides everything you need.
 
 -   Opinions and conventions should be followed to implement these features.
 
 -   Next.js simplifies the process of building a web application for production.
 
-1. Routing
-2. Api routes
-3. Redirect
-4. Data fetching
-5. Styling
-6. Optimization
-7. Dev and prod build system and more
+    1.  Routing
+    2.  Api routes
+    3.  Redirect
+    4.  Data fetching
+    5.  Styling
+    6.  Optimization
+    7.  Dev and prod build system and more
 
 ## Prerequisites
 
@@ -55,6 +55,26 @@ npm run dev
 
 Get started by editing `src/app/page.tsx`
 
+## React Server Components (RSC)
+
+React Server Components is a new architecture that was introduced by the React team and quickly adopted by Next.js. \
+This architecture introduces a new approach to creating React components by dividing them into two distinct types.
+
+-   Server Components
+-   Client Components
+
+### Server Components
+
+> By default, Next.js treats all components as Server components. \
+> These components can perform server-side tasks like reading files or featching data directly from a database. \
+> The trade-off is that they can't use React hooks or handle user interctions.
+
+### Client Components
+
+> To create a client component, you'll need to add the `use client` directive at the top of your component file. \
+> While Client components can't perform server-side tasks like reading files, they can use hooks and handle user interactions. \
+> Client components are the traditional React components you're already familiar with from previous versions of React.
+
 ## Routing
 
 Next.js has a file-system based routing mechanism \
@@ -65,6 +85,22 @@ URL paths that users can access in the browser are defined by files and folders 
 All routes must be placed inside the **app** folder \
 Every file that corresponds to a route must be named **page.js** or **page.tsx** \
 Every folder corresponds to a path segment in the browser URL.
+
+### Home Route `/`
+
+> Scenario 1
+
+```
+app
+├── layout.tsx
+└── page.tsx    (/ -> route)
+```
+
+`/`
+
+### File based routing contd. `Route1`
+
+> Scenario 2
 
 ```
 app
@@ -78,7 +114,9 @@ app
 
 `/` `/about` `/profile`
 
-### Nested Routes
+### Nested Routes `Route1/Route2`
+
+> Scenario 3
 
 ```
 app
@@ -94,7 +132,9 @@ app
 
 `/` `/blog` `/blog/first` `/blog/second`
 
-### Dynamic Routes
+### Dynamic Routes `Route1/[Route1ID]`
+
+> Scenario 4
 
 ```
 app
@@ -109,16 +149,20 @@ app
 `/` `/products` `/products/1` `/products/100`
 
 ```tsx
-export default function ProductDetails({
-    params,
+export default async function ProductDetails({
+	params,
 }: {
-    params: { productId: string };
+	params: Promise<{ productId: string }>;
 }) {
-    return <h1>Products {params.productId} page</h1>;
+	// const productId = (await params).productId;
+	const { productId } = await params;
+	return <h1>Product {productId} page</h1>;
 }
 ```
 
-### Nested Dynamic Routes
+### Nested Dynamic Routes `Route1/[Route1ID]/Route2/[Route2ID]`
+
+> Scenario 5
 
 ```
 app
@@ -136,51 +180,60 @@ app
 `/` `/products` `/products/1` `/products/1/reviews/1` `/products/100/reviews/5`
 
 ```tsx
-export default function Product({
-    params,
+export default async function ReviewsDetails({
+	params,
 }: {
-    params: {
-        productIs: string;
-        reviewId: string;
-    };
+	params: Promise<{ productId: string; reviewId: string }>;
 }) {
-    return (
-        <>
-            Reviews {params.reviewId} && Products {params.productId}
-        </>
-    );
+	const { productId, reviewId } = await params;
+	return (
+		<h1>
+			Reviews {reviewId} for Products {productId}
+		</h1>
+	);
 }
 ```
 
-### Catch all Segments
+### Catch all Segments `Route1/[[...slug]]`
+
+> Scenario 6
 
 ```
 app
 ├── docs
 │ └── [[...slug]] ya [...slug]
-│   └── page.tsx    (/products/productId -> route)
+│   └── page.tsx    (/docs/routing & /docs/routing/catch-all-segments -> route)
 ├── layout.tsx
 └── page.tsx        (/ -> route)
 ```
 
-`/` `/docs` `/docs/routing` `/docs/routing/catch-all-segments`
+`/` `/docs` `/docs/routing` `/docs/routing/catch-all-segments` `/docs/abc/pqr/xyz`
 
 ```tsx
-export default function Docs({ params }: { params: { slug: string[] } }) {
-    if (params.slug?.length === 2) {
-        return (
-            <h1>
-                Docs {params.slug[0]} & {params.slug[1]}{" "}
-            </h1>
-        );
-    } else if (params.slug?.length === 1) {
-        return <h1>Docs {params.slug[0]}</h1>;
-    }
-    return <h1>Docs home page</h1>;
+export default async function Docs({
+	params,
+}: {
+	params: Promise<{ slug: string[] }>;
+}) {
+	const { slug } = await params;
+	if (slug?.length === 2) {
+		return (
+			<h1>
+				Viewing docs for feature {slug[0]} and concept {slug[1]}
+			</h1>
+		);
+	} else if (slug?.length === 1) {
+		return <h1>Viewing docs for feature {slug[0]}</h1>;
+	}
+	return <h1>Docs home page</h1>;
 }
 ```
 
-### Not found page
+### Not found page `Route1/not-found.tsx`
+
+-   Route not match - not-found.tsx
+-   not-found.tsx function does not accept **props**, use `usePathname` hook.
+-   Use this hook to render page not found - `notFound`
 
 ```
 app
@@ -201,17 +254,23 @@ app
 
 ### File Colocation
 
--   routes file name must be page.tsx
--   export default (otherwise elements will not be displayed and a 404 error will occur)
--   Create React Component at src/component path
+-   routes file name must be `page.tsx`
+-   `export default` (otherwise elements will not be displayed and a 404 error will occur)
+-   Create React Component at `src/component` path
 
-### Private Folders
+### Private Folders `_lib`
 
--   A private folder indicates that it is a private implementation detail and should not be considered by the routing system.
+-   A way to tell Next.js, "Hey, this folder is just for internal stuff - don't include it in the routing system."
 -   The folder and all its subfolders are excluded from routing.
--   Prefix the folder name with an underscore ( \_ )
+-   Add an underscore `_` at the start of the folder name.
+-   Private folders are super useful for a bunch of things:
+    -   Keeping your UI logic separate from routing logic
+    -   Having a consistent way to organize internal files in your project
+    -   Making it easier to group related files in your code editor
+    -   Avoiding potential naming conflicts with future Next.js file naming conventions
+-   If you actually want an underscore in your URL, use `%5F` instead. That's just the URL-encoded version of an underscore.
 
-### Route Groups
+### Route Groups `(auth)`
 
 -   Allows us to logically group our routes and project files without affecting the the URL
 
@@ -230,31 +289,34 @@ app
 
 `/` `/login` `/register` `/forgot-password`
 
-### Layouts
+### Layouts `layout.tsx`
 
--   You can define a layout by default exporting a React component from a **layout.js** or **layout.tsx** file.
--   That component should accept a children prop that will be populated with a child page during rendering.
+-   Pages are route-specific UI components
+-   A layout is UI that is shared between multiple pages in you app
+-   Default export a React component from a **layout.js** or **layout.tsx** file.
+-   That component should accept a `children` prop that will be populated with a child page during rendering.
+-   we don't need to create layout from scretch because Next.js provide one by default.
 
 ```tsx
 // RootLayout Function
 export default function RootLayout({
-    children,
+	children,
 }: {
-    children: React.ReactNode;
+	children: React.ReactNode;
 }) {
-    return (
-        <html lang="en">
-            <body>
-                <div>
-                    <p>Header</p>
-                </div>
-                {children}
-                <div>
-                    <p>Footer</p>
-                </div>
-            </body>
-        </html>
-    );
+	return (
+		<html lang="en">
+			<body>
+				<div>
+					<p>Header</p>
+				</div>
+				{children}
+				<div>
+					<p>Footer</p>
+				</div>
+			</body>
+		</html>
+	);
 }
 // Replace children variable from routes page.jsx
 ```
@@ -273,10 +335,10 @@ app
 └── page.tsx                (/ -> route)
 ```
 
-### Route Group Layout
+### Route Group Layout / Multiple Root Layouts
 
--   To organize your project in a manner that doesn't affect the URL.
--   To selectively apply a layout to certain segments while leaving others untouched.
+-   To organize our project structure without affecting the URLs.
+-   Apply layouts selectively to specific parts of our app.
 
 ```
 app
@@ -295,16 +357,20 @@ app
 
 ### Routing Metadata
 
-**Configuring Metadata**
+The Metadata API in Next.js is a powerful feature that lets us define metadata for each page \
+Metadata ensures our content looks geat when it's shared or indexed by search engines \
+Two ways to handle metadata in layout.tsx or page.tsx files:
 
--   Export a static metadata object
--   Export a dynamic generateMetadata function
+1.  export a static `metadata` object
+2.  export a dynamic `generateMetadata` function
+
+> **Configuring Metadata**
 
 **Metadata rules**
 
--   Both layout.tsx and page.tsx files can export metadata. If defined in a layout, it applies to all pages in the layout, but if defined in a page, it applies only to that pages
+-   Both `layout.tsx` and `page.tsx` files can export metadata. Layout metadata applies to all pages, while page metadata is specific to that pages
 -   Metadata is read in order, from the root level down to the final page level
--   When there's metadata in multiple pages for the same route, they get combined but page metadata will replace layout metadata if they have the same properties
+-   When metadata exists in multiple places along a route, they merge together, with page metadata overriding layout metadata for matching properties
 
 **title Metadata**
 
@@ -314,13 +380,13 @@ app
 ```tsx
 import { Metadata } from "next";
 export const metadata: Metadata = {
-    // title object
-    title: {
-        // absolute: "Next Routing",   // Exact title name
-        default: "Routing on Next.js", // default for all pages
-        template: "%s | Routing Chapter", // replace %s with child title
-    },
-    description: "Generated by Next.js",
+	// title object
+	title: {
+		// absolute: "Next Routing",   // Exact title name
+		default: "Routing on Next.js", // default for all pages
+		template: "%s | Routing Chapter", // replace %s with child title
+	},
+	description: "Generated by Next.js",
 };
 ```
 
@@ -379,15 +445,15 @@ router.forward(); // navigate forward
 ```tsx
 // Components Hierarchy
 <Layout>
-    <Template>
-        <ErrorBoundary fallback={<Error />}>
-            <Suspense fallback={<Loading />}>
-                <ErrorBoundary fallback={<NotFound />}>
-                    <Page />
-                </ErrorBoundary>
-            </Suspense>
-        </ErrorBoundary>
-    </Template>
+	<Template>
+		<ErrorBoundary fallback={<Error />}>
+			<Suspense fallback={<Loading />}>
+				<ErrorBoundary fallback={<NotFound />}>
+					<Page />
+				</ErrorBoundary>
+			</Suspense>
+		</ErrorBoundary>
+	</Template>
 </Layout>
 ```
 
@@ -396,19 +462,19 @@ router.forward(); // navigate forward
 ```tsx
 "use client";
 export default function ErrorBoundary({
-    error,
-    reset,
+	error,
+	reset,
 }: {
-    error: Error;
-    reset: () => void; // Recovering Errors function
+	error: Error;
+	reset: () => void; // Recovering Errors function
 }) {
-    return (
-        <div>
-            <h3>Error in Review</h3>
-            <h3>{error.message}</h3>
-            <button onClick={reset}>Try Again</button>
-        </div>
-    );
+	return (
+		<div>
+			<h3>Error in Review</h3>
+			<h3>{error.message}</h3>
+			<button onClick={reset}>Try Again</button>
+		</div>
+	);
 }
 ```
 
