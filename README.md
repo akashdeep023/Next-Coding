@@ -376,6 +376,7 @@ Two ways to handle metadata in layout.tsx or page.tsx files:
 
 -   The title field's primary purpose is to define the document title.
 -   It can be either a string or an object.
+-   `absolute`, `default`, `template`
 
 ```tsx
 import { Metadata } from "next";
@@ -392,19 +393,31 @@ export const metadata: Metadata = {
 
 ### Navigation
 
+-   File based routing system
+-   Defining routes for our application's root, nested routes, dynamic routes, and catch-all routes
+
 **Link Tag**
 
+-   For client-side navigation, Next.js gives us the `<Link>` component
 -   `Link` tag used to navigate different pages
 -   Syntax `<Link href="/">Home</Link>`
 
 **replace Attributes**
 
 -   `replace` attribute Replace the current history state instead of adding a new url into the stack.
+-   Syntax `<Link href="/products/1" replace>Product 1</Link>`
 
 **usePathname**
 
 -   This function returns the current path.
 -   `usePathname` works on the client side. To use `usePathname` on the server side, write `"use client";` at the top of the file.
+
+**params and searchParams**
+
+For a given URL
+
+-   `params` is a promise that resolves to an object containing the dynamic route parameters (like id)
+-   `searchParams` is a promise that resolves to an object containing the query parameters (like filters and sorting)
 
 **useRouter**
 
