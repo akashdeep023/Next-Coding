@@ -554,7 +554,7 @@ export default function ErrorBoundary({
 5. **not-found.tsx**: Renders a 404 page when a route is not found.
 6. **page.tsx**: Represents an individual page within the application.
 
-### Parallel Routes
+### Parallel Routes `@folder`
 
 > Scenario 7
 
@@ -598,7 +598,7 @@ app
 └── page.tsx
 ```
 
-### Unmatched Routes
+### Unmatched Routes `default.tsx`
 
 **Sub-Navigation from the UI**
 
