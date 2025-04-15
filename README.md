@@ -418,8 +418,9 @@ For a given URL
 
 -   `params` is a promise that resolves to an object containing the dynamic route parameters (like id)
 -   `searchParams` is a promise that resolves to an object containing the query parameters (like filters and sorting)
+-   While `page.tsx` has access to both `params` and `searchParams`, `layout.tsx` only has access to `params`
 
-**useRouter**
+**useRouter / Navigation Programmatically**
 
 -   `useRouter` works on the client side. To use `useRouter` on the server side, write `"use client";` at the top of the file.
 -   This function is used to navigate to other path.
@@ -434,29 +435,50 @@ router.back(); // navigate back
 router.forward(); // navigate forward
 ```
 
-### Templates
+```tsx
+import {redirect} = from "next/navigation";
+// use
+redirect("/products");
+```
+
+### Templates `template.tsx`
 
 -   **Templates** are **similar** to layout in that they wrap each child layout or page
--   But, with templates, when a user navigates between routes that share a template, a new instance of the component is mounted, DOM elements are recreated, **state is not preserved**, and effects are re-synchronized
+-   But, with templates, when a user navigates between routes that share a template, a new instance of the component is `mounted`, DOM elements are recreated, `state is not preserved`, and effects are `re-synchronized`
 
--   A template can be defined by exporting a default React component from a template.js or template.tsx file
+-   A template can be defined by exporting a default React component from a `template.js` or `template.tsx` file
 -   Similar to layout, templates also should accept a children prop which will render the nested segments in the route.
+-   You can also use both layout and template component
 
-### Loading UI
+> **layout** -> `state preserved`
+
+> **template** -> `state not preserved`
+
+### Loading UI `loading.tsx`
 
 -   This file allows us to create a loading state that are displayed to users while a specific route segment's content is loaded
 
 -   The loading state appears immediately upon navigation, giving users the assurance that the application is responsive and actively loading content.
 
-### Error Handling
+1. It gives users immediate feedback when they navigate somewhere new This makes your app feel snappy and responsive, and users know their click actually did something.
+2. Next.js keeps shared layouts interactive while new content loads Users can still use things like navigation menus or sidebars even if the main content isn't ready yet.
+
+### Error Handling `error.tsx`
 
 -   Automatically wrap a route segment and its nested children in a React Error Boundary
--   Create error UI tailored to specific segments using the file-system hierarchy to adjust granularity
+-   You can create error UI for specific segments using the file-system hierarchy
 -   Isolate errors to affected segments while keeping the rest of the application functional
 -   Add functionality to attempt to recover from an error without a full page reload.
 
 ```tsx
 // Components Hierarchy
+// layout.tsx
+// template.tsx
+// error.tsx
+// loading.tsx
+// not-found.tsx
+// page.tsx
+
 <Layout>
 	<Template>
 		<ErrorBoundary fallback={<Error />}>
@@ -473,19 +495,28 @@ router.forward(); // navigate forward
 **Recovering From Errors**
 
 ```tsx
+// This component will be rendered on the client-side only (not server-side)
 "use client";
+import { useRouter } from "next/navigation";
+import { startTransition } from "react";
 export default function ErrorBoundary({
 	error,
 	reset,
 }: {
 	error: Error;
-	reset: () => void; // Recovering Errors function
+	reset: () => void;
 }) {
+	const router = useRouter();
+	const reload = () => {
+		startTransition(() => {
+			router.refresh();
+			reset();
+		});
+	};
 	return (
 		<div>
-			<h3>Error in Review</h3>
 			<h3>{error.message}</h3>
-			<button onClick={reset}>Try Again</button>
+			<button onClick={reload}>Try Again</button>
 		</div>
 	);
 }

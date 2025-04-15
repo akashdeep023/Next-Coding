@@ -1,4 +1,3 @@
-"use client";
 // Nested Dynamic Routes ----------------------------------------------------------------
 
 import { notFound } from "next/navigation"; // review page not found
@@ -14,11 +13,11 @@ export default async function ReviewsDetails({
 }: {
 	params: Promise<{ productId: string; reviewId: string }>;
 }) {
-	const { productId, reviewId } = await params;
 	const rendom = generateInt(2);
 	if (rendom == 1) {
 		throw new Error("Error: Review not found"); // throw error when review not found
 	}
+	const { productId, reviewId } = await params;
 	if (parseInt(reviewId) > 1000) {
 		notFound();
 	}
