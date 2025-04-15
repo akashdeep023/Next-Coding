@@ -556,11 +556,34 @@ export default function ErrorBoundary({
 
 ### Parallel Routes
 
--   Parallel routes are an advanced routing mechanism that allows for the simulataneous rendering of multiple pages within the same layout.
--   Parallel routes in Next.js are defined using a feature known as slots.
--   Slots help structure our content in a modular fashion.
--   To define a slot, we use the `@folder` naming convention.
--   Each slot is then passed as a prop to its corresponding `layout.tsx` file.
+> Scenario 7
+
+-   What they are:
+
+    -   Parallel routes are an advanced routing mechanism that allows for the simulataneous rendering of multiple pages within the same layout.
+
+-   How to set them up:
+
+    -   Parallel routes in Next.js are defined using a feature known as slots.
+    -   Slots help structure our content in a modular fashion.
+    -   To define a slot, we use the `@folder` naming convention.
+    -   Each slot is then passed as a prop to its corresponding `layout.tsx` file.
+
+-   Parallel routes use cases
+
+    -   Dashboards with multiple sections
+    -   Split-view interfaces
+    -   Multi-pane layouts
+    -   Complex admin interfaces
+
+-   Parallel routes benefits
+    -   Paralles routes are great for splitting a layout into manageable slots (especilly when different teams work on different parts)
+    -   Independent route handling
+        -   Each slot in your layout, such as users, revenue, and notifications, can handle its own loading and error states
+        -   This granular control is particularly useful in scenarios where different sections of the page load at varying speeds or encounter unique error
+    -   Sub-navigation
+        -   Each slot can essentially functions as a mini-application, complete with its own navigation and state management
+        -   Users can interact with each section separately, applying filters, sorting data, or navigation through pages without affecting other parts
 
 ```
 app
@@ -577,14 +600,14 @@ app
 
 ### Unmatched Routes
 
-**Navigation from the UI**
+**Sub-Navigation from the UI**
 
--   In the case of navigation within the UI, Next.js retains the previously active state of a slot regardless of changes in the URL.
+-   When navigating through the UI (like clicking links), Next.js keeps showing whatever was in the unmatched slots before
 
 **Page reload**
 
--   Nextjs immediately searches for a `default.tsx` file within each unmatched slot
--   The persence of this file is critical, as it provides a the default content that Next.js will renter in the user interface
+-   Next.js immediately searches for a `default.tsx` file within each unmatched slot
+-   This file is critical as a fallback to render content when the framewrok connot retrieve a slot's active state from the current URL
 -   If this `default.tsx` file is missing in any of the unmatched slots for the current route Next.js will render a 404 error.
 
 **default.tsx**
