@@ -614,3 +614,9 @@ app
 
 -   The `default.tsx` file in Next.js serves as a fallback to render content when the framwork cannot retrieve a slot's active state from the current URL.
 -   You have complete freedom to define the UI fro unmatched routes: you can either mirror the content found in page.tsx or craft an entirely custom view.
+
+### Conditional routes `complex-dashboard/@login`
+
+-   Imagine you want to show different content based on whether a user is logged in or not
+-   You might want to display a dashboard for authenticated users but show a login page for those who aren't
+-   Conditional routes allow us to achieve this while maintaining completely separate code on the same URL
