@@ -525,13 +525,25 @@ export default function ErrorBoundary({
 **Handling Errors in Nested Routes**
 
 -   Errors bubble up to the closest parent error boundary.
--   An `error.tsx` file will cater to errors for all its nested child segments
--   By positioning `error.tsx` files at different levels in the nested folders of a route, you can achieve a more granular level of error handling.
+-   An `error.tsx` file handles errors not just for its own folder, but for all the nested child segments below it too.
+-   By strategically `error.tsx` files at different levels in your route folders, you can control exactly how detailed your error handling gets.
+-   Where you put your `error.tsx` file makes a huge difference - it determines exactly which parts of your UI get affected when things go wrong.
 
 **Handling Error in Layouts**
 
--   An `error.tsx` file will handle errors for all its nested child sections
--   The error boundary does not catch errors thrown here because it's nested in the inside the layout component
+-   An `error.tsx` file will handle errors for all its nested child sections.
+-   There's an intersting catch with `layout.tsx` components in the same segment.
+-   The error boundary won't catch errors thrown in `layout.tsx` within the same segment because of how the `component hierarchy` works.
+-   The layout actually sits above the error boundary in the component tree.
+
+**Handling global errors** `global-error.tsx`
+
+-   If an error boundary can't catch errors in the `layout.tsx` file from the same segment, what about errors in the `root layout`?
+-   It doesn't have a parent segment - how do we handle those errors?
+-   `Next.js` provides a special file called `global-error.tsx` that goes in your `root app` directory.
+-   This is your last line of defense when something goes catastrophically wrong as the highest levell of your app.
+    -   Works only in production mode
+    -   Requires html and body tags to be rendered
 
 ### Special Files
 
