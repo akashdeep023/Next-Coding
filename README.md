@@ -554,6 +554,11 @@ export default function ErrorBoundary({
 5. **not-found.tsx**: Renders a 404 page when a route is not found.
 6. **page.tsx**: Represents an individual page within the application.
 
+### Advanced routing patterns
+
+1. Parallel Routes `@folder`
+2. Intercepting Routes ``
+
 ### Parallel Routes `@folder`
 
 > Scenario 7
@@ -620,3 +625,15 @@ app
 -   Imagine you want to show different content based on whether a user is logged in or not
 -   You might want to display a dashboard for authenticated users but show a login page for those who aren't
 -   Conditional routes allow us to achieve this while maintaining completely separate code on the same URL
+
+### Intercepting Routes `(.)`,`(..)`,`(..)(..)`,`(...)`
+
+-   Intercepting routes is an advanced routing machanism that allows you to load a route form another part of your application within the current layout.
+-   It's particularly useful when you what to display new content while keeping your user in the same context.
+
+**Intercepting routes conventions**
+
+-   `(.)` to match segments on the `same level` Ex- (.)route
+-   `(..)` to match segments `one level above` Ex- (..)route
+-   `(..)(..)` to match segments `two level above` Ex- (..)(..)route
+-   `(...)` to match segments from the `root app directory` Ex- (...)route
