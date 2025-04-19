@@ -637,3 +637,37 @@ app
 -   `(..)` to match segments `one level above` Ex- (..)route
 -   `(..)(..)` to match segments `two level above` Ex- (..)(..)route
 -   `(...)` to match segments from the `root app directory` Ex- (...)route
+
+### 🌐 Example & Comparison Table
+
+-   If you navigate from `/posts` to `/posts/123`, the modal pops up, and the background remains the post list.
+-   If you refresh or visit `/posts/123` directly, you see the full post detail page.
+
+| Feature                  | Parallel Routes                                 | Intercepting Routes                                               |
+| ------------------------ | ----------------------------------------------- | ----------------------------------------------------------------- |
+| 🧠 Purpose               | Render multiple independent routes in parallel. | Render a route as an overlay without full navigation.             |
+| 📐 Layout Behavior       | Divides the page into multiple slots.           | Displays a route's content above the current route (e.g., modal). |
+| 🧾 URL Behavior          | Usually same URL for multiple parallel areas.   | URL updates, but background page remains active.                  |
+| 💡 Typical Use Case      | Dashboards, chat layouts, sidebars.             | Modals, drawers, previews.                                        |
+| ⚙️ Folder Naming         | `@slotName` folders inside layouts.             | `@(.)[route]` folders for modal/intercepted content.              |
+| 🏎️ Navigation Experience | Different route parts load together.            | Background persists, new route overlays on top.                   |
+
+> 🎯 Summary:
+
+| Concept             | Explanation                                   |
+| ------------------- | --------------------------------------------- |
+| Parallel Routes     | Layout splits into multiple dynamic sections. |
+| Intercepting Routes | Allows overlay-like navigation for routes.    |
+
+✅ Use **Parallel Routes** when you want:
+
+-   Different components (main, sidebar, notifications) to work in parallel.
+
+✅ Use **Intercepting Routes** when you want:
+
+-   One route to load on top of another (like modals) while preserving page context.
+
+> 💡 **Tip:**
+
+Both can be combined!  
+For example: a dashboard with a sidebar (`Parallel Route`) and a post detail modal (`Intercepting Route`) on top.
