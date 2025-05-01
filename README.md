@@ -684,15 +684,31 @@ For example, if you're building an app that needs to talk to third-party service
 Route handlers run `server-side`, our sensitive info like private keys stays `secure` and never reaches the browser.\
 Route Handlers are the equivalent of API routes in Page route\
 Next.js supports `GET`, `POST`, `PUT`, `PATCH`, `DELETE`, `HEAD`, and `OPTIONS`\
-If an `unsupported` method is called, Next.js will return a `405` Method Not Allowed response.
+If an `unsupported` method is called, Next.js will return a `405` Method Not Allowed response.\
+By default `route.ts` (route handler) response the request.
 
-### Handling GET Request `hello/route.ts`
+### Handling GET Request `comments/route.ts`
 
 ```ts
 export async function GET() {
-	return new Response("Hello world!");
+	// return new Response("Hello world!");
+	return Response.json(comments);
 }
 ```
 
-`/hello`\
-By default `route.ts` (route handler) response the request.
+GET `/comments`
+
+### Handling POST Request `comments/route.ts`
+
+```ts
+export async function POST(request: Request) {
+	const comment = await request.json();
+	// save to db
+	return new Response(JSON.stringify(newComment), {
+		headers: { "Content-Type": "application/json" },
+		status: 201,
+	});
+}
+```
+
+POST `/comments`
