@@ -760,3 +760,20 @@ export async function DELETE(
 ```
 
 DELETE `/comments/1`, `/comments/2`
+
+### Handling URL Query Parameters `/comments?query=xyz`
+
+```ts
+import { NextRequest } from "next/server";
+import { comments } from "./data";
+export async function GET(request: NextRequest) {
+	const searchParams = request.nextUrl.searchParams;
+	const query = searchParams.get("query") || "";
+	const filteredComments = query
+		? comments.filter((comment) => comment.text.includes(query))
+		: comments;
+	return Response.json(filteredComments);
+}
+```
+
+Param `/comment?query=first
