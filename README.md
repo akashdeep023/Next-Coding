@@ -729,3 +729,30 @@ export async function GET(
 ```
 
 GET `/comments/1`, `/comments/2`
+
+### Handling PATCH Route `comments/[id]/route.ts`
+
+```ts
+export async function PATCH(
+	request: Request,
+	{ params }: { params: Promise<{ id: string }> }
+) {
+	const { id } = await params;
+	const body = await request.json();
+	// update comment by id
+	return Response.json(comment);
+}
+```
+
+### Handling DELETE Route `comments/[id]/route.ts`
+
+```ts
+export async function PATCH(
+	request: Request,
+	{ params }: { params: Promise<{ id: string }> }
+) {
+	const { id } = await params;
+	// delete comment by id
+	return Response.json(comment);
+}
+```
