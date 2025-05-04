@@ -712,3 +712,20 @@ export async function POST(request: Request) {
 ```
 
 POST `/comments`
+
+### Handling Dynamic Route `comments/[id]/route.ts`
+
+```ts
+import { comments } from "../data";
+
+export async function GET(
+	request: Request,
+	{ params }: { params: { id: string } }
+) {
+	const { id } = await params;
+	// find comment by id
+	return Response.json(comment);
+}
+```
+
+GET `/comments/1`, `/comments/2`
