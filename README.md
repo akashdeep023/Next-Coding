@@ -744,10 +744,12 @@ export async function PATCH(
 }
 ```
 
+PATCH `/comments/1`, `/comments/2`
+
 ### Handling DELETE Route `comments/[id]/route.ts`
 
 ```ts
-export async function PATCH(
+export async function DELETE(
 	request: Request,
 	{ params }: { params: Promise<{ id: string }> }
 ) {
@@ -756,3 +758,5 @@ export async function PATCH(
 	return Response.json(comment);
 }
 ```
+
+DELETE `/comments/1`, `/comments/2`
