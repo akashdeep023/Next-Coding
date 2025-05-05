@@ -838,3 +838,25 @@ export async function GET(request: NextRequest) {
 	});
 }
 ```
+
+### Redirects in Route Handlers
+
+```ts
+// api/v1/users
+export async function GET() {
+	// get v1 users data
+	return Response.json(users);
+}
+
+// api/v2/users
+export async function GET() {
+	// get v2 users data
+	return Response.json(users);
+}
+
+// api/v1/users (redirect)
+import { redirect } from "next/navigation";
+export async function GET() {
+	redirect("/api/v2/users");
+}
+```
