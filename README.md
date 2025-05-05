@@ -860,3 +860,21 @@ export async function GET() {
 	redirect("/api/v2/users");
 }
 ```
+
+### Caching in Route Handlers
+
+Route handlers are not cached by default but you can opt into caching when using the GET method.
+
+-   Route handlers are **not cached** by default but you can opt into caching when using the **GET** method.
+-   Caching only works with **GET** methods.
+-   Other HTTP methods like POST, PUT, or DELETE are **never cached**.
+-   If you're using dynamic functions like **headers()** and **cookies()**, or working with the request object in your GET method, **caching won't be applied**.
+
+```ts
+export const dynamic = "force-static"; // Force static rendering for this route
+export const revalidate = 10; // Disable revalidation for this route
+
+export async function GET() {
+	return Response.json({ time: new Date().toLocaleTimeString() });
+}
+```
