@@ -1354,3 +1354,30 @@ export async function generateStaticParams() {
 -   if you're working with something like a blog where you have a smaller, more fixed number of pages, you can pre-render all of them and set dynamicParams to false
 
 -   If someone tries to access a blog post that doesn't exist, they'll get a clean 404 error instead of waiting for a page that will never exist
+
+### Steaming
+
+-   Streaming is a strategy that allows for `progressive UI` rendering from the server
+-   Work is broken down into smaller chunks and streamed to the `client` as soon as they're ready
+-   This means users can see parts of the page right away, without waiting for everything to load
+-   It's particularly powerful for improving initial page load times and handling UI elements that depend on slower data fetches, which would normally hold up the entire route
+-   Streaming comes built right into the App Router
+
+```tsx
+import { Suspense } from "react";
+import { Product } from "@/components/product";
+import { Reviews } from "@/components/reviews";
+export default function ProductDetailPage() {
+	return (
+		<div>
+			<h1>Product detail page</h1>
+			<Suspense fallback={<p>Loading product details...</p>}>
+				<Product />
+			</Suspense>
+			<Suspense fallback={<p>Loading reviews details...</p>}>
+				<Reviews />
+			</Suspense>
+		</div>
+	);
+}
+```
