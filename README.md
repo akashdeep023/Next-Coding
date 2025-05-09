@@ -1159,3 +1159,37 @@ Server rendering strategies
 1. Static rendering
 2. Dynamic rendering
 3. Streaming
+
+### Static rendering
+
+-   Static rendering is a server rendering strategy where we generate HTML pages when building our application
+-   Think of it as preparing all your content in advance - before any user visits your site
+-   Once built, these pages can be cached by CDNs and served instantly to users
+-   With this approach, the same pre-rendered page can be shared among different users, giving your app a significant performance boost
+-   Static rendering perfect for things like blog posts, e-commerce product listings, documentation, and marketing pages
+
+**How to statically render?**
+
+-   Static rendering is the default strategy in the app router
+-   All routes are automatically prepared at build time without any additional setup
+-   "Hold on - you keep talking about generating HTML at build time, but we haven't built our application yet, right? We're just running it in development mode?"
+
+**Prefetching**
+
+-   Prefetching is a technique that preloads routes in the background as their links become visible
+-   For static routes like ours, Next.js automatically prefetches and caches the whole route
+-   When our home page loads, Next.js is already prefetching about and dashboard routes for instant navigation
+
+### Dynamic rendering
+
+-   Dynamic rendering is a server rendering strategy where routes are rendered uniquely for each user when they make a request
+-   It is useful when you need to show personalized data or information that's only available at request time (and not ahead of time during prerendering) - things like cookies or URL search parameters
+-   News websites, personalized shopping pages, and social media feeds are some examples where dynamic rendering is beneficial
+
+`generateStaticParams()`
+
+-   generateStaticParams is a function that
+    -   works alongside dynamic route segments
+    -   to generate static routes during build time
+    -   instead of on demand at request time
+    -   giving us a nice performance boost
