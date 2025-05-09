@@ -1136,8 +1136,8 @@ Suspense for SSR brought us closer to a seamless rendering experience.
 
 > **RSC + Next.js**
 
--   Every component in a Next.js app default to being a `server` component.
--   Running components on the server brings several advantages: zero-bundle size, direct access to server-side resources, improved security, and better SEO.
+-   Every component in a Next.js app `default` to being a `server component`.
+-   Running components on the server brings several advantages: `zero-bundle size`, `direct access` to server-side `resources`, improved `security`, and `better SEO`.
 
 **Summary**
 
@@ -1145,6 +1145,36 @@ Suspense for SSR brought us closer to a seamless rendering experience.
 -   To create client components, add the `"use client"` directive at the top of the file.
 -   Server components are rendered `exclusively` on the server.
 -   Client components are rendered `once on the server` and then `on the client`.
+
+```tsx
+// Default Server components
+export default async function AboutPage() {
+	console.log("About server component");
+	// Time not change in production mode
+	return <h1>About page {new Date().toLocaleTimeString()}</h1>;
+}
+```
+
+```tsx
+// Client components
+("use client");
+import { useState } from "react";
+export default function DashboardPage() {
+	console.log("Dashboard client component");
+	const [name, setName] = useState("");
+	return (
+		<div>
+			<h1>Dashboard</h1>
+			<input
+				className="border"
+				value={name}
+				onChange={(e) => setName(e.target.value)}
+			/>
+			<p>Hello, {name}!</p>
+		</div>
+	);
+}
+```
 
 `RSC rendering lifecycle`
 
@@ -1162,29 +1192,71 @@ Server rendering strategies
 
 ### Static rendering
 
--   Static rendering is a server rendering strategy where we generate HTML pages when building our application
+-   Static rendering is a `server rendering` strategy where we generate `HTML pages` when building our application
 -   Think of it as preparing all your content in advance - before any user visits your site
 -   Once built, these pages can be cached by CDNs and served instantly to users
--   With this approach, the same pre-rendered page can be shared among different users, giving your app a significant performance boost
--   Static rendering perfect for things like blog posts, e-commerce product listings, documentation, and marketing pages
+-   With this approach, the same `pre-rendered` page can be shared among different users, giving your app a significant performance boost
+-   Static rendering perfect for things like `blog posts`, `e-commerce product listings`, `documentation`, and `marketing pages`.
+
+```tsx
+export default async function AboutPage() {
+	console.log("About server component");
+	// Time not change in production mode
+	return <h1>About page {new Date().toLocaleTimeString()}</h1>;
+}
+```
 
 **How to statically render?**
 
--   Static rendering is the default strategy in the app router
+-   Static rendering is the `default strategy` in the app router
 -   All routes are automatically prepared at build time without any additional setup
--   "Hold on - you keep talking about generating HTML at build time, but we haven't built our application yet, right? We're just running it in development mode?"
+-   "Hold on - you keep talking about `generating HTML` at build time, but we haven't built our application yet, right? We're just running it in development mode?"
 
 **Prefetching**
 
--   Prefetching is a technique that preloads routes in the background as their links become visible
--   For static routes like ours, Next.js automatically prefetches and caches the whole route
--   When our home page loads, Next.js is already prefetching about and dashboard routes for instant navigation
+-   Prefetching is a technique that `preloads routes` in the background as their links become visible
+-   For static routes like ours, Next.js `automatically prefetches` and caches the whole route
+-   When our home page loads, Next.js is already prefetching `about` and `dashboard` routes for instant navigation
+
+```tsx
+import Link from "next/link";
+
+export default function Home() {
+	// About and Dashboard Link
+	return (
+		<div className="flex flex-col gap-4">
+			<Link href={"/about"}>About</Link>
+			<Link href={"/dashboard"}>Dashboard</Link>
+		</div>
+	);
+}
+```
 
 ### Dynamic rendering
 
--   Dynamic rendering is a server rendering strategy where routes are rendered uniquely for each user when they make a request
--   It is useful when you need to show personalized data or information that's only available at request time (and not ahead of time during prerendering) - things like cookies or URL search parameters
--   News websites, personalized shopping pages, and social media feeds are some examples where dynamic rendering is beneficial
+-   Dynamic rendering is a `server rendering` strategy where routes are rendered uniquely for each user when they make a request
+-   It is useful when you need to show personalized data or information that's only available at request time (and not ahead of time during prerendering) - things like `cookies` or URL `search parameters`
+-   `News websites`, personalized `shopping pages`, and `social media feeds` are some examples where dynamic rendering is beneficial
+
+**Dynamic rendering summary**
+
+-   Dynamic rendering is a strategy where the HTML is generated at `request time`
+-   Next.js `automatically enables` it when it encounters `dynamic functions` like `cookies`, `headers`, `connection`, `draftMode`, `after` or `searchParams prop`
+-   Dynamic rendering is great for personalized content like social media feeds
+-   You `don't have to stress` about choosing between `static` and `dynamic` rendering
+-   Next.js `automatically` selects the optimal rendering strategy for each route based on the `features` and `APIs` you're using
+
+```tsx
+import { cookies } from "next/headers";
+export default async function AboutPage() {
+	const cookieStore = await cookies();
+	const theme = cookieStore.get("theme");
+	console.log(theme);
+	console.log("About server component");
+	// Time change in production mode because dynamic rendering
+	return <h1>About page {new Date().toLocaleTimeString()}</h1>;
+}
+```
 
 `generateStaticParams()`
 
