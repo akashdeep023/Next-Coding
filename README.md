@@ -1258,10 +1258,77 @@ export default async function AboutPage() {
 }
 ```
 
-`generateStaticParams()`
+**generateStaticParams()**
 
--   generateStaticParams is a function that
+-   `generateStaticParams` is a `function` that
     -   works alongside dynamic route segments
-    -   to generate static routes during build time
+    -   to generate `static routes` during `build time`
     -   instead of on demand at request time
     -   giving us a nice performance boost
+
+```tsx
+// ProductsPage (Static rendering)
+import Link from "next/link";
+export default function ProductsPage() {
+	return (
+		<div className="flex flex-col gap-1">
+			<h1>Products</h1>
+			<Link href="/products/1">Product 1</Link>
+			<Link href="/products/2">Product 2</Link>
+			<Link href="/products/3">Product 3</Link>
+		</div>
+	);
+}
+```
+
+```tsx
+// ProductsPage (Dynamic rendering)
+export default async function ProductPage({
+	params,
+}: {
+	params: Promise<{ id: string }>;
+}) {
+	const { id } = await params;
+	return (
+		<h1>
+			Product {id} details rendered at {new Date().toLocaleString()}
+		</h1>
+	);
+}
+```
+
+```tsx
+// ProductsPage (Static rendering) using generateStaticParams fn
+export async function generateStaticParams() {
+	return [{ id: "1" }, { id: "2" }, { id: "3" }];
+}
+export default async function ProductPage({
+	params,
+}: {
+	params: Promise<{ id: string }>;
+}) {
+	const { id } = await params;
+	return (
+		<h1>
+			Product {id} details rendered at {new Date().toLocaleString()}
+		</h1>
+	);
+}
+```
+
+**Multiple dynamic route segments**
+
+Suppose we have a product catalog with categories and products
+
+`/products/[category]/[product]/page.tsx`
+
+```ts
+export async function generateStaticParams() {
+	return [
+		{ category: "electronics", product: "smartphone" },
+		{ category: "electronics", product: "laptop" },
+		{ category: "books", product: "science-fiction" },
+		{ category: "books", product: "biography" },
+	];
+}
+```
