@@ -1,3 +1,6 @@
+// False dynamic params for this route
+export const dynamicParams = false;
+
 // generateStaticParams is used to specify the dynamic routes that should be pre-rendered at build time
 export async function generateStaticParams() {
 	return [{ id: "1" }, { id: "2" }, { id: "3" }];
