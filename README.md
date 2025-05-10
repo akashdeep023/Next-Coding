@@ -1431,3 +1431,59 @@ export default function ProductDetailPage() {
 -   `Client-only` code works with `browser-specific` features - think `DOM manipulation`, `window object interactions`, or `localStorage` operations
 -   These features aren't available on the `server`, so we need to make sure such code runs only on the `client side` to avoid `server-side` rendering errors
 -   To prevent unintended server side usage of client side code, we can use a package called `client-only`
+
+**Client Component placement**
+
+-   Since `server components` can't handle `state` and `interactivity`, we need `client components` to fill this gap
+-   The key recommendation here is to position these client components `lower` in your `component tree`
+
+```ts
+// All component are server components
+SC - SERVER COMPONENT
+CC - CLIENT COMPONENT
+							───────────────
+							| LANDING PAGE |(SC)
+							───────────────
+							↙			↘
+				─────────────			─────────────
+				| NAV BAR   |(SC)		|    MAIN   |(SC)
+				─────────────			─────────────
+				↙			↘
+	─────────────			──────────────
+	| NAV LINKS |(SC)		| NAV SEARCH |(SC)
+	─────────────			──────────────
+```
+
+```ts
+// Make NAV BAR a client component then all the components inside this file will be client components
+SC - SERVER COMPONENT
+CC - CLIENT COMPONENT
+							───────────────
+							| LANDING PAGE |(SC)
+							───────────────
+							↙			↘
+				─────────────			─────────────
+				| NAV BAR   |(CC)		|    MAIN   |(SC)
+				─────────────			─────────────
+				↙			↘
+	─────────────			──────────────
+	| NAV LINKS |(CC)		| NAV SEARCH |(CC)
+	─────────────			──────────────
+```
+
+```ts
+// Make only NAV SEARCH	a client component
+SC - SERVER COMPONENT
+CC - CLIENT COMPONENT
+							───────────────
+							| LANDING PAGE |(SC)
+							───────────────
+							↙			↘
+				─────────────			─────────────
+				| NAV BAR   |(SC)		|    MAIN   |(SC)
+				─────────────			─────────────
+				↙			↘
+	─────────────			──────────────
+	| NAV LINKS |(SC)		| NAV SEARCH |(CC)
+	─────────────			──────────────
+```
