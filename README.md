@@ -75,7 +75,7 @@ This architecture introduces a new approach to creating React components by divi
 > While Client components can't perform server-side tasks like reading files, they can use hooks and handle user interactions. \
 > Client components are the traditional React components you're already familiar with from previous versions of React.
 
-## Routing
+## **Routing**
 
 Next.js has a file-system based routing mechanism \
 URL paths that users can access in the browser are defined by files and folders in youu codebase
@@ -672,7 +672,7 @@ app
 Both can be combined!  
 For example: a dashboard with a sidebar (`Parallel Route`) and a post detail modal (`Intercepting Route`) on top.
 
-## Route Handlers
+## **Route Handlers**
 
 We've learned how to route to pages\
 The app router lets you create custom request handlers for your routes using a feature called `Route Handlers`\
@@ -925,7 +925,7 @@ export function middleware(request: NextRequest) {
 }
 ```
 
-## Rendering in NEXT.JS
+## **Rendering in NEXT.JS**
 
 -   Rendering is the process of transforming the component code you write into user interfaces that users can see and interact with.
 -   In Next.js, the tricky part to building a performant application is figuring out when and where this transformation should happen.
@@ -1382,7 +1382,7 @@ export default function ProductDetailPage() {
 }
 ```
 
-## Server and client composition patterns
+### Server and client composition patterns
 
 -   **Server components**
     -   fetching data
@@ -1495,3 +1495,5 @@ CC - CLIENT COMPONENT
 3. Server component inside client component - `WORKING`
 4. Client component inside server component - `NOT WORKING`
     - SOL- pass `props`,`children`: Client component inside server component - `WORKING`
+
+## **Data fetching and mutations**
