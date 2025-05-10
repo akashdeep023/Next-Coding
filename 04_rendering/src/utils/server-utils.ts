@@ -1,4 +1,4 @@
-// import "server-only"; // server-only module works only in server components
+import "server-only"; // server-only module works only in server components
 
 export const serverSideFunction = () => {
 	console.log(

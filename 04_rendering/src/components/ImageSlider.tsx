@@ -1,13 +1,11 @@
-"use client";
-// import { serverSideFunction } from "@/utils/server-utils"; // work only in server components
+"use client"; // ImageSlider is a client component
+
 import React from "react";
-import Slider from "react-slick"; // work only in client components
+import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 
-export default function ClientRoute() {
-	// const result = serverSideFunction();
-	// return <h1>Client Route {result}</h1>;
+export default function ServerRoutePage() {
 	const settings = {
 		dots: true,
 	};

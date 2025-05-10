@@ -1408,3 +1408,11 @@ export default function ProductDetailPage() {
 **Server-only package**
 
 -   Throws a `build-time error` if someone accidentally imports `server code` into a `Client Component`.
+
+**Third-party package**
+
+-   Server Components have introduced an exciting new paradigm in React, and the ecosystem is evolving to keep up
+-   Third-party packages are starting to add the `"use client"` directive to `components` that need `client-side features`, making it clear where they should run
+-   Many npm packages haven't made this transition yet
+-   This means while they work fine in `Client Components`, they might break or fail completely in `Server Components`
+-   We can wrap the `third-party` components that need client-side features in our own `Client Components`
