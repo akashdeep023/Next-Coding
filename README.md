@@ -1416,3 +1416,11 @@ export default function ProductDetailPage() {
 -   Many npm packages haven't made this transition yet
 -   This means while they work fine in `Client Components`, they might break or fail completely in `Server Components`
 -   We can wrap the `third-party` components that need client-side features in our own `Client Components`
+
+**Context providers**
+
+-   `Context providers` typically live near the `root of an application` to share `global state` and `logic`
+-   For example, your application's `theme`
+-   However, React context isn't supported in `Server Components`
+-   If you try to create a context at your application's root, you'll run into an error
+-   The solution is to create your context and render its provider inside a dedicated `Client Component`
