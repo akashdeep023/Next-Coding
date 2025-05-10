@@ -1487,3 +1487,11 @@ CC - CLIENT COMPONENT
 	| NAV LINKS |(SC)		| NAV SEARCH |(CC)
 	─────────────			──────────────
 ```
+
+### Interleaving Server and Client Components
+
+1. Server component inside server component - `WORKING`
+2. Client component inside client component - `WORKING`
+3. Server component inside client component - `WORKING`
+4. Client component inside server component - `NOT WORKING`
+    - SOL- pass `props`,`children`: Client component inside server component - `WORKING`
