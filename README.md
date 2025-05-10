@@ -1381,3 +1381,30 @@ export default function ProductDetailPage() {
 	);
 }
 ```
+
+## Server and client composition patterns
+
+-   **Server components**
+    -   fetching data
+    -   accessing backend resources directly
+    -   keeping sensitive information (like access tokens and API keys) secure on the server
+    -   handling large dependencies server-side - which means less JavaScript for your users to download
+-   **Client components**
+    -   adding interactivity
+    -   handling event listeners (like onClick(), onChange(), etc.)
+    -   managing state and lifecycle effects (using hooks like useState(), useReducer(), useEffect())
+    -   working with browser-specific APIs
+    -   implementing custom hooks
+    -   Using React class components
+
+### Server-only code
+
+-   Some code is specifically designed to run exclusively on the `server`
+-   Think about modules or functions that work with multiple libraries, handle `environment` variables, communicate directly with `databases`, or process `sensitive information`
+-   Since JavaScript modules can be shared between Server and Client Components, code meant for the server could accidentally find its way to the client
+-   This is bad news as it can bloat your JavaScript bundle, expose your secret keys, database queries, and sensitive business logic
+-   It's super important to keep `server-only` code separate from client-side code
+
+**Server-only package**
+
+-   Throws a `build-time error` if someone accidentally imports `server code` into a `Client Component`.
