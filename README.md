@@ -1424,3 +1424,10 @@ export default function ProductDetailPage() {
 -   However, React context isn't supported in `Server Components`
 -   If you try to create a context at your application's root, you'll run into an error
 -   The solution is to create your context and render its provider inside a dedicated `Client Component`
+
+### Client-only code
+
+-   Just like how we need to keep certain operations server-side, it's equally crucial to keep some functionality strictly on the client side
+-   `Client-only` code works with `browser-specific` features - think `DOM manipulation`, `window object interactions`, or `localStorage` operations
+-   These features aren't available on the `server`, so we need to make sure such code runs only on the `client side` to avoid `server-side` rendering errors
+-   To prevent unintended server side usage of client side code, we can use a package called `client-only`
