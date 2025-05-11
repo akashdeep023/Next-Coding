@@ -1497,3 +1497,42 @@ CC - CLIENT COMPONENT
     - SOL- pass `props`,`children`: Client component inside server component - `WORKING`
 
 ## **Data fetching and mutations**
+
+**Data fetching in App Router**
+
+-   So far, we've been working with `hard-coded` content in our `routes` and `components`
+-   In actual `enterprise` apps, you're usually `pulling data` from `external` sources
+-   The App Router is built on `React Server Components` (RSC) architecture which gives us the flexibility to `fetch data` using either server components or client components
+
+**Data fetching in App Router contd.**
+
+-   It's usually preferable to use `server components` for data operations because:
+
+    -   You can directly communicate with your `databases` and `file systems` on the `server side`
+    -   You get better performance since you're closer to your data sources
+    -   Your `client-side` bundle stays lean because the heavy lifting happens `server-side`
+    -   Your `sensitive operations` and `API keys` remain secure on the `server`
+
+### Fetching Data in Client Components
+
+-   Client Components do `not` support `async/await` directly at the top level.
+-   Instead, you typically `fetch` data using `useEffect` and React state hooks like `useState`.
+-   This means data fetching is done after the component is rendered on the client, not during server-side rendering.
+
+### Fetching data with Server Components
+
+-   The RSC architecture supports `async` and `await` keywords in `Server Components`
+-   This means we can write our data fetching code just like regular JavaScript, using async functions coupled with the await keyword
+
+**Request memoization contd.**
+
+-   This means you can fetch data wherever you need it in your component tree without worrying about duplicate network requests
+-   React will only make the actual fetch `once` and `reuse` the result for subsequent calls during the same render pass
+-   It's a React `feature` and thereby included in Next.js
+-   Lets you write `data-fetching` code exactly where you need it rather than having to centralize fetches and pass data down through props
+
+**Loading and Error states**
+
+-   While `client components` require you to manage these states with `separate variables` and `conditional rendering`, server components make this process much cleaner
+-   To implement a `loading` state, all we need to do is define and export a React component in `loading.tsx`
+-   For handling `errors`, define and export a React component in `error.tsx`
