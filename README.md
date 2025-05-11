@@ -1595,3 +1595,17 @@ npx prisma migrate dev --name init
 
 -   `.gitignore` `/prisma/app.db` file
 -   Create `prisma-db.ts` file to define database operations.
+
+### Data mutations
+
+-   When we work with data, we're typically performing what we call CRUD operations:
+    -   Create
+    -   Read
+    -   Update
+    -   Delete
+
+**Data mutations contd.**
+
+-   To follow along, make sure to check out the previous topic on fetching data from a database where we set up our `Prisma` client with a `SQLite` database
+-   To really appreciate the app router's approach to data mutations, it's worth looking at how we've traditionally handled data mutations in React
+-   This comparison will help us appreciate the benefits of the app router approach
