@@ -1549,3 +1549,5 @@ CC - CLIENT COMPONENT
     -   fetches all posts
     -   for each post, fetch author using the userId property
     -   example of sequential fetching because we need the userId from each post before we can fetch its author.
+
+**Parallel**: requests in a route are eagerly initiated and will load data at the same time. This reduces the total time it takes to load data.
