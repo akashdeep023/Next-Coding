@@ -1536,3 +1536,16 @@ CC - CLIENT COMPONENT
 -   While `client components` require you to manage these states with `separate variables` and `conditional rendering`, server components make this process much cleaner
 -   To implement a `loading` state, all we need to do is define and export a React component in `loading.tsx`
 -   For handling `errors`, define and export a React component in `error.tsx`
+
+### Data fetching patterns
+
+-   When fatching data inside components, you need to be aware of two data fetching patterns:
+    1.  Sequential
+    2.  Parallel
+
+**Sequential**: requests in a component tree are dependent on each other. This can lead to longer loading times.
+
+-   We'll create a Posts component
+    -   fetches all posts
+    -   for each post, fetch author using the userId property
+    -   example of sequential fetching because we need the userId from each post before we can fetch its author.
