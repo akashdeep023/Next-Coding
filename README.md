@@ -1645,3 +1645,8 @@ npx prisma migrate dev --name init
     -   **action**: a reference to the `function` that was passed to the parent `<form>`'s action `prop`
 
 -   We'll use `"pending"` to disable our submit `button` while the form is being processed
+
+### Form validation with useActionState
+
+-   `useActionState` is a React hook that allows us to update state based on the `result` of a `form action`
+-   It is particularly helpful for handling `form validation` and `error` messages
