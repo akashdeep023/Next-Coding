@@ -1609,3 +1609,26 @@ npx prisma migrate dev --name init
 -   To follow along, make sure to check out the previous topic on fetching data from a database where we set up our `Prisma` client with a `SQLite` database
 -   To really appreciate the app router's approach to data mutations, it's worth looking at how we've traditionally handled data mutations in React
 -   This comparison will help us appreciate the benefits of the app router approach
+
+### Server Actions
+
+-   Server Actions are `asynchronous` functions that are executed on the `server`
+-   They can be called in `Server` and `Client` Components to handle form submissions and `data mutations` in `Next.js` applications
+-   You should use Server Actions when you:
+    -   need to perform `secure` database operations
+    -   want to `reduce` API boilerplate code
+    -   need progressive `enhancement` for forms
+
+**Server Actions convention**
+
+-   A Server Action can be defined with the React `"use server"` directive
+-   You can place the directive
+    -   at the top of an `async` function to mark the function as a Server Action, or
+    -   at the top of a separate file to mark `all exports` of that file as `Server Actions`
+
+**Server Actions benefits**
+
+-   **Simplified code**: they dramatically simplify your code as there is no need for `separate` API routes or client-side `state` management for form data.
+-   **Improved security**: they boost `security` by keeping sensitive operations `server-side`, away from potential threats
+-   **Better performance**: they improve `performance` because there's less JavaScript running on the client, leading to faster load times and better core web vitals
+-   **Progressive enhancement**: forms keep working even if JavaScript is turned off in the browser - making your apps more `accessible` and `resilient`
