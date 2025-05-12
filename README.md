@@ -1632,3 +1632,16 @@ npx prisma migrate dev --name init
 -   **Improved security**: they boost `security` by keeping sensitive operations `server-side`, away from potential threats
 -   **Better performance**: they improve `performance` because there's less JavaScript running on the client, leading to faster load times and better core web vitals
 -   **Progressive enhancement**: forms keep working even if JavaScript is turned off in the browser - making your apps more `accessible` and `resilient`
+
+### Pending state with `useFormStatus`
+
+-   useFormStatus is a React hook that gives us status information about the last form submission
+
+-   **const status = useFormStatus()**
+
+    -   **pending**: a `boolean` that indicates if the parent `<form>` is currently `submitting`
+    -   **data**: an `object` containing the form's submission `data`
+    -   **method**: a string (either 'get' or 'post') showing the `HTTP method` being used
+    -   **action**: a reference to the `function` that was passed to the parent `<form>`'s action `prop`
+
+-   We'll use `"pending"` to disable our submit `button` while the form is being processed
