@@ -1,3 +1,4 @@
+import { RemoveProduct } from "@/action/product";
 import { getProducts } from "@/prisma-db";
 import Link from "next/link";
 
@@ -24,6 +25,14 @@ export default async function ProductsPrismaDBPage() {
 					</h2>
 					<p>{product.description}</p>
 					<p className="text-lg font-medium">${product.price}</p>
+					<form action={RemoveProduct.bind(null, product.id)}>
+						<button
+							type="submit"
+							className="mt-4 bg-red-500 text-white py-2 px-4 rounded-md hover:bg-red-600"
+						>
+							Delete
+						</button>
+					</form>
 				</li>
 			))}
 		</ul>
