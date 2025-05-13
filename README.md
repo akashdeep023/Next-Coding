@@ -1658,3 +1658,9 @@ npx prisma migrate dev --name init
 -   `isPending` from `useActionState` can be used with `any Action`, not just form submissions
 -   Go with **pending** from `useFormStatus` when you're building `reusable` components that are meant to live `inside forms`. For example, submit buttons or `loading` spinners that you'll want to use across different forms in your application.
 -   Choose **isPending** from `useActionState` when you need to keep track of `server actions` that aren't necessarily related to form submissions. It gives you that `extra` flexibility.
+
+### `useOptimistic` Hook
+
+-   `useOptimistic` is a React Hook that provides a way to `optimistically update` the `UI` while an `asynchronous` action is `underway`
+-   This technique helps make our apps feel more `responsive`, `especially` when working with `forms`
+-   Instead of making `users` wait for `server` responses, we can show them the expected result right away.
