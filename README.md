@@ -1664,3 +1664,16 @@ npx prisma migrate dev --name init
 -   `useOptimistic` is a React Hook that provides a way to `optimistically update` the `UI` while an `asynchronous` action is `underway`
 -   This technique helps make our apps feel more `responsive`, `especially` when working with `forms`
 -   Instead of making `users` wait for `server` responses, we can show them the expected result right away.
+
+### Form component
+
+-   The `Form component` is built on top of the `HTML` form element
+-   Comes with some powerful `features` that make it perfect for `modern` web applications:
+    -   It automatically `prefetches` loading UI
+    -   It handles `client-side` navigation on form `submission`
+    -   It provides progressive `enhancement` out of the box
+
+1. when the Form component becomes visible, it prefetches the loading UI associated with `"/product-db"` route
+2. when a user submits the search, it instantly `navigates` to the products page `client-side` and the form data gets turned into URL params
+3. it'll show the `loading` state while the search results are being `fetched`
+4. once the data is ready, the results are `displayed` in the `UI`
