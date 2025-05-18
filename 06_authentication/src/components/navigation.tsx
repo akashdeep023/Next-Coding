@@ -1,7 +1,7 @@
 import {
 	SignInButton,
 	SignOutButton,
-	// SignUpButton,
+	SignUpButton,
 	// UserButton,
 	SignedIn,
 	SignedOut,
@@ -19,13 +19,33 @@ export const Navigation = () => {
 					</div>
 					<div className="flex items-center gap-4">
 						<SignedOut>
-							<SignInButton mode="modal" />
-							{/* <SignUpButton mode="modal" /> */}
+							{/* <SignInButton mode="modal" />
+							<SignUpButton mode="modal" /> */}
+							<SignInButton>
+								<button className="px-3 cursor-pointer py-1 rounded-2xl border border-gray-300">
+									Sign in
+								</button>
+							</SignInButton>
+							<SignUpButton>
+								<button className="px-3 cursor-pointer py-1 rounded-2xl border border-gray-300">
+									Sign up
+								</button>
+							</SignUpButton>
 						</SignedOut>
 						<SignedIn>
 							{/* <UserButton /> */}
-							<Link href="/user-profile">Profile</Link>
-							<SignOutButton />
+							<Link
+								href="/user-profile"
+								className="px-3 cursor-pointer py-1 rounded-2xl border border-gray-300"
+							>
+								Profile
+							</Link>
+							{/* <SignOutButton /> */}
+							<SignOutButton>
+								<button className="px-3 cursor-pointer py-1 rounded-2xl border border-gray-300">
+									Sign out
+								</button>
+							</SignOutButton>
 						</SignedIn>
 					</div>
 				</div>

@@ -1852,3 +1852,55 @@ export async function removeRole(formData: FormData) {
 
 `Clerk > Your_Project_dashboard > Organizations` \
 [Docs Link](https://clerk.com/docs/organizations/overview)
+
+### Customizing Clerk Components
+
+**Customize Button**
+
+```tsx
+{
+	/* <SignInButton mode="modal" /> */
+}
+<SignInButton>
+	<button className="px-3 cursor-pointer py-1 rounded-2xl border border-gray-300">
+		Sign in
+	</button>
+</SignInButton>;
+```
+
+**Customize Component**
+
+```tsx
+import { SignUp } from "@clerk/nextjs";
+
+export default function SignUpPage() {
+	return (
+		<div className="flex justify-center items-center py-8">
+			<SignUp />
+		</div>
+	);
+}
+```
+
+-   Make sure `/sign-up` and `/sign-in` in public route
+-   `middleware.ts` file
+
+```ts
+const isPublicRoute = createRouteMatcher(["/", "/sign-in(.*)", "/sign-up(.*)"]);
+```
+
+-   Add those variable in `.env.local` file
+
+```sh
+# Public url
+NEXT_PUBLIC_CLERK_SIGN_IN_URL=/sign-in
+NEXT_PUBLIC_CLERK_SIGN_UP_URL=/sign-up
+
+# Public fallback redirect url
+NEXT_PUBLIC_CLERK_SIGN_UP_FALLBACK_REDIRECT_URL=/onboarding
+NEXT_PUBLIC_CLERK_SIGN_IN_FALLBACK_REDIRECT_URL=/dashboard
+
+# Public force redirect url
+NEXT_PUBLIC_CLERK_SIGN_UP_FORCE_REDIRECT_URL=/onboarding
+NEXT_PUBLIC_CLERK_SIGN_IN_FORCE_REDIRECT_URL=/dashboard
+```
