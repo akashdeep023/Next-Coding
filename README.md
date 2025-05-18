@@ -1699,3 +1699,156 @@ npx prisma migrate dev --name init
 6. Access session and user data when needed
 7. Set up role-based access control (admin, editor, viewer, and so on)
 8. Provide a way to sign out
+
+### User roles and permissions
+
+-   Most apps need more than just checking if someone's logged in or not
+-   They need different permission levels for different users
+-   How to implement role-based access control (RBAC) using Clerk
+
+**User roles and permissions cond.**
+
+`Configure the session token`
+
+-   Clerk gives us something called user metadata, which is like a storage space for extra user information
+-   we'll use it to store user roles
+-   publicMetadata because it's read-only in the browser, making it super secure for storing sensitive information like user roles
+-   to build a basic RBAC system, we need to make sure this publicMetadata is readily available in the session token
+-   we can quickly check user roles without having to make extra network requests every time we need this information
+
+**Setup**
+
+> Step 1. \
+> Create custome session token
+
+`Clerk > Your_Project_dashboard > Configure > Sessions` \
+`Custome session token > Edit`
+
+```ts
+{
+	"metadata": "{{user.public_metadata}}"
+}
+```
+
+> Step 2. \
+> Create globals typescript definition to work with role
+
+`types/globals.d.ts` file
+
+```ts
+export {};
+
+export type Roles = "admin" | "moderator";
+
+declare global {
+	interface CustomJwtSessionClaims {
+		metadata: {
+			role?: Roles;
+		};
+	}
+}
+```
+
+> Step 3. \
+> Manually add the admin role to own user
+
+`Clerk > Your_Project_dashboard > User` \
+`Select own user account` \
+`Metadata > Public > Edit`
+
+```ts
+{
+	"role": "admin"
+}
+```
+
+> Step 4. \
+> Define `/admin` route
+
+```tsx
+export default function Admin() {
+	return <h1>Admin only page</h1>;
+}
+```
+
+> Step 5. \
+> Protect `/admin` route in `middleware.ts` file
+
+```ts
+// Protect all routes that start with /admin
+const isAdminRoute = createRouteMatcher(["/admin(.*)"]);
+
+export default clerkMiddleware(async (auth, req) => {
+	const { userId, redirectToSignIn } = await auth();
+	if (
+		isAdminRoute(req) &&
+		(await auth()).sessionClaims?.metadata?.role !== "admin"
+	) {
+		const url = new URL("/", req.url);
+		return NextResponse.redirect(url);
+	}
+});
+```
+
+> Step 6. \
+> Server action to manage user roles `actions.ts`
+
+```ts
+"use server";
+import { auth } from "@clerk/nextjs/server";
+import { clerkClient } from "@clerk/nextjs/server";
+import { Roles } from "../../../types/globals";
+import { revalidatePath } from "next/cache";
+
+// Set Role (admin, moderator)
+export async function setRole(formData: FormData) {
+	const { sessionClaims } = await auth();
+
+	// Check that the user trying to set the role is an admin
+	if (sessionClaims?.metadata?.role !== "admin") {
+		throw new Error("Not Authorized");
+	}
+
+	const client = await clerkClient();
+	const id = formData.get("id") as string;
+	const role = formData.get("role") as Roles;
+
+	try {
+		await client.users.updateUser(id, {
+			publicMetadata: { role },
+		});
+		revalidatePath("/admin");
+	} catch {
+		throw new Error("Failed to set role");
+	}
+}
+
+// Remove Role
+export async function removeRole(formData: FormData) {
+	const { sessionClaims } = await auth();
+
+	if (sessionClaims?.metadata?.role !== "admin") {
+		throw new Error("Not Authorized");
+	}
+
+	const client = await clerkClient();
+	const id = formData.get("id") as string;
+
+	try {
+		await client.users.updateUser(id, {
+			publicMetadata: { role: null },
+		});
+		revalidatePath("/admin");
+	} catch {
+		throw new Error("Failed to remove role");
+	}
+}
+```
+
+> Step 7. \
+> Update `/admin/page.tsx`
+
+**Role based access control system create for large application**
+
+`Clerk > Your_Project_dashboard > Organizations` \
+[Docs Link](https://clerk.com/docs/organizations/overview)
